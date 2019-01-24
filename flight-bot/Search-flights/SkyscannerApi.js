@@ -1,6 +1,8 @@
 
 const config = require('../config');
 const axios = require('axios');
+var location = ""; 
+
 
 
 
@@ -9,24 +11,29 @@ function searchFlights(originPlace,destination,departure,ReturnDate) {
     apiResultToCarousselle(response.data)
   );
 }
-function searchPlaces(results){
-
+function searchPlaces(X){
+return PlacesApiCall(X).then(response => 
+  apiPlacesResult(response.data) )
+}
+function apiPlacesResult(results){
+location = results.Places[0]['PlaceId'];
 }
 
-
-function PlacesApiCall(location){
- return axios.get('https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/autosuggest/v1.0/UK/GBP/en-GB',{
+function PlacesApiCall(X){
+ return axios.get('https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/autosuggest/v1.0/UK/GBP/en-GB/',{
  headers: {"X-RapidAPI-Key" : config.SKYSCANNER_TOKEN }, 
  params: {
-    query: location
+    query: X
   }
 });
 }
 
 
 function SkyscannerApiCall(originPlace,destination,departure,ReturnDate) {
-originPlace = PlacesApiCall(originPlace).data.Places[0]['PlaceId'];
-destinationplace = PlacesApiCall(destination).data.Places[0]['PlaceId'];
+searchPlaces(originPlace);
+originPlace = location;
+searchPlaces(destination);
+destinationplace = location;
 outboundpartialdate = departure;
     return axios.get(`https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browsequotes/v1.0/NL/EUR/en-US/${originPlace}/${destinationplace}/${outboundpartialdate}`, {
     headers: {"X-RapidAPI-Key" : config.SKYSCANNER_TOKEN },
