@@ -1,6 +1,6 @@
 const config = require('../config');
 const { searchFlights } = require('./SkyscannerApi.js');
-const constants = require('./constants');
+
 function loadFlightsRoute(app) {
     app.post('/search-flights', function(req, res) {
       console.log('[GET] /search-flights');
@@ -16,8 +16,6 @@ function loadFlightsRoute(app) {
 
       const ReturnDateMem = req.body.conversation.memory['ReturnDate'];
       const ReturnDate = ReturnDateMem['iso'].substring(0,10);
-
-     
 
       return searchFlights(originPlace,destination,departure,ReturnDate)
       .then(function(carouselle) {
