@@ -11,22 +11,7 @@ function searchFlights(originPlace,destination,departure,ReturnDate) {
     apiResultToCarousselle(response.data)
   );
 }
-async function searchPlaces(X){
-return await PlacesApiCall(X).then(response => 
-  apiPlacesResult(response.data) )
-}
-async function apiPlacesResult(results){
-location = results.Places[0]['PlaceId'];
-}
 
-async function PlacesApiCall(X){
- return await axios.get('https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/autosuggest/v1.0/UK/GBP/en-GB/',{
- headers: {"X-RapidAPI-Key" : config.SKYSCANNER_TOKEN }, 
- params: {
-    query: X
-  }
-});
-}
 
 
 function SkyscannerApiCall(originPlace,destination,departure,ReturnDate) {
